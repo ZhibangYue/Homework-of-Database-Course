@@ -1,0 +1,102 @@
+{% extends 'myadmin/base.html' %}
+{% block head %}
+<title>后台商品管理</title>
+<link rel="stylesheet" href="/static/assets/plugin/datatables/responsive.dataTables.min.css">
+<link rel="stylesheet" href="/static/assets/plugin/datatables/dataTables.bootstrap5.min.css">
+<link rel="stylesheet" href="/static/assets/css/my-task.style.min.css">
+<link rel="stylesheet" href="/static/assets/css/css2.css">
+{% endblock %}
+
+{% block con %}
+<!-- Form -->
+<form class="row g-1 p-3 p-md-4" action="{% url 'myadmin_merchandise_insert' %}" method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    <div class="col-12 text-center mb-5">
+        <h1>添加新商品（书籍）</h1>
+        <span>填写下方表格完成创建</span>
+    </div>
+    <div class="col-4">
+        <div class="mb-2">
+            <label class="form-label">名称*</label>
+            <input type="text" required name="name" maxlength="30" class="form-control form-control-lg" placeholder="请输入名称">
+        </div>
+    </div>
+    <div class="col-4">
+        <div class="mb-2">
+            <label class="form-label">作者*</label>
+            <input type="text" required name="author" maxlength="50" class="form-control form-control-lg" placeholder="请输入作者">
+        </div>
+    </div>
+    <div class="col-2">
+        <div class="mb-2">
+            <label class="form-label">价格*</label>
+                <input type="number" required step="0.01" value="0" name="price" class="form-control form-control-lg" placeholder="请输入价格">
+        </div>
+    </div>
+    <div class="col-2">
+        <div class="mb-3">
+            <label class="form-label">类别</label>
+            <select name="type" class="form-select form-control-lg" >
+                <option selected></option>
+                {% for i in data %}
+                <option value="{{ i.name }}">{{ i.name }}</option>
+                {% endfor %}
+            </select>
+        </div>
+    </div>
+        <div class="col-12">
+        <div class="mb-2">
+            <label class="form-label">出版社</label>
+            <input type="text" name="publisher" minlength="0" maxlength="40" class="form-control form-control-lg"
+                   placeholder="请输入出版社">
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="mb-2">
+            <label class="form-label">出版时间</label>
+            <input type="date" name="pub_date" class="form-control form-control-lg">
+        </div>
+        <div class="mb-4">
+            <label class="form-label">简介</label>
+            <textarea rows="5" class="form-control form-control-lg" placeholder="简介" name="abstract"></textarea>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">封面</label>
+            <input type="file" name="pic" class="form-control form-control-lg">
+        </div>
+    </div>
+    <div class="col-6">
+        <div class="mb-3">
+            <label class="form-label">封面预览</label>
+            <img id="readimg" style="max-height: 300px;max-width: 300px" class="form-control form-control-lg">
+        </div>
+    </div>
+
+    <div class="col-12 text-center mt-4">
+        <button type="submit" id="submit" class="btn btn-lg btn-block btn-light lift text-uppercase" style="background-color: purple;color: white">提交</button>
+    </div>
+
+</form>
+<!-- End Form -->
+{% endblock %}
+
+{% block script %}
+<!-- Plugin Js-->
+<script src="/static/assets/bundles/dataTables.bundle.js"></script>
+<script src="/static/assets/bundles/apexcharts.bundle.js"></script>
+<!-- Jquery Page Js -->
+<script src="/static/js/template.js"></script>
+<!--<script src="/static/js/page/hr.js"></script>-->
+<script>
+    $('input[name=pic]').change(function(){
+        var file = this.files[0]
+        var reader = new FileReader();
+        //将文件以Data URL形式读入页面
+        reader.readAsDataURL(file);
+        reader.onload=function(e){
+            $("#readimg").attr('src',this.result)
+            }
+            })
+
+</script>
+{% endblock %}

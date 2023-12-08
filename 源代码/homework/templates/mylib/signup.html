@@ -1,0 +1,224 @@
+<!doctype html>
+<html class="no-js" lang="en" dir="ltr">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>注册新用户</title>
+    <link rel="icon" href="/static/favicon.ico" type="image/x-icon"> <!-- Favicon-->
+    <!-- project css file  -->
+    <link rel="stylesheet" href="/static/assets/css/my-task.style.min.css">
+</head>
+
+<body>
+
+<div id="mytask-layout" class="theme-indigo">
+
+    <!-- main body area -->
+    <div class="main p-2 py-3 p-xl-5">
+
+        <!-- Body: Body -->
+        <div class="body d-flex p-0 p-xl-5">
+            <div class="container-xxl">
+
+                <div class="row g-0">
+                    <div class="col-lg-6 d-none d-lg-flex justify-content-center align-items-center rounded-lg auth-h100">
+                        <div style="max-width: 25rem;">
+                            <div class="text-center mb-5">
+                                <svg width="4rem" fill="currentColor" class="bi bi-clipboard-check" viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd"
+                                          d="M10.854 7.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 1 1 .708-.708L7.5 9.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                                    <path d="M4 1.5H3a2 2 0 0 0-2 2V14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V3.5a2 2 0 0 0-2-2h-1v1h1a1 1 0 0 1 1 1V14a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V3.5a1 1 0 0 1 1-1h1v-1z"/>
+                                    <path d="M9.5 1a.5.5 0 0 1 .5.5v1a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1-.5-.5v-1a.5.5 0 0 1 .5-.5h3zm-3-1A1.5 1.5 0 0 0 5 1.5v1A1.5 1.5 0 0 0 6.5 4h3A1.5 1.5 0 0 0 11 2.5v-1A1.5 1.5 0 0 0 9.5 0h-3z"/>
+                                </svg>
+                            </div>
+                            <div class="mb-5">
+                                <h2 class="color-900 text-center">注册一个新账号</h2>
+                            </div>
+                            <!-- Image block -->
+                            <div class="">
+                                <img src="/static/assets/images/login-img.svg" alt="login-img">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-6 d-flex justify-content-center align-items-center border-0 rounded-lg auth-h100">
+                        <div class="w-100 p-3 p-md-5 card border-0 bg-dark text-light" style="max-width: 32rem;">
+                            <!-- Form -->
+                            <form class="row g-1 p-3 p-md-4" action="{% url 'mylib_register' %} " method="post"
+                                  enctype="multipart/form-data">
+                                {% csrf_token %}
+                                <div class="col-12 text-center mb-5">
+                                    <h1>创建账号</h1>
+                                    <span>不收取任何费用！</span>
+                                </div>
+                                <div class="col-6">
+                                    <div class="mb-2">
+                                        <label class="form-label">用户名</label>
+                                        <input type="text" class="form-control form-control-lg" name="nickname"
+                                               placeholder="请输入用户名">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="mb-1">
+                                        <label class="form-label">性别</label>
+                                        <label class="form-control form-control-lg">
+                                            <input type="radio" value="男" name="sex">男<input type="radio" value="女"
+                                                                                              name="sex">女
+                                        </label>
+
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="mb-2">
+                                        <label class="form-label">手机号码*</label>
+                                        <input type="text" name="phone" required minlength="11" maxlength="11"
+                                               class="form-control form-control-lg"
+                                               placeholder="需要中国大陆手机号码（不含+86）">
+                                    </div>
+                                    <div class="mb-2">
+                                        <label class="form-label">电子邮箱*</label>
+                                        <input type="email" class="form-control form-control-lg"
+                                               name="email" id="email"
+                                               placeholder="请输入电子邮箱地址">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="mb-2">
+                                        <label class="form-label">密码*</label>
+                                        <input type="password" name="password" required minlength="8" id="pw1"
+                                               class="form-control form-control-lg"
+                                               placeholder="需要至少8个字符">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <div class="mb-2">
+                                        <label class="form-label">确认密码*</label><span id="check"></span>
+                                        <input type="password" required minlength="8" id="pw2" onkeyup="validate()"
+                                               class="form-control form-control-lg" placeholder="再次输入密码">
+                                    </div>
+                                </div>
+                                <div class="col-8">
+                                    <div class="mb-2">
+                                        <label class="form-label">验证码</label>
+                                        <input type="text"  maxlength="6" name="verify"
+                                               class="form-control form-control-lg" placeholder="请输入验证码">
+
+                                    </div>
+                                </div>
+                                <div class="col-4">
+                                    <div class="mb-2">
+                                        <label class="form-label">点击按钮</label>
+                                        <input type="button" id="sendEmail" onclick="sendcode()"
+                                               class="form-control form-control-lg" value="获取验证码"
+                                               style="padding: inherit">
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <div class="form-check">
+                                        <input class="form-check-input" required type="checkbox" value=""
+                                               id="flexCheckDefault">
+                                        <label class="form-check-label" for="flexCheckDefault">
+                                            我接受<a href="{% url 'mylib_terms' %}" title="Terms and Conditions"
+                                                     class="text-secondary">隐私政策与用户协议</a>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="col-12 text-center mt-4">
+                                    <button type="submit" id="submit"
+                                            class="btn btn-lg btn-block btn-light lift text-uppercase">注册
+                                    </button>
+                                </div>
+                                <div class="col-12 text-center mt-4">
+                                    <span class="text-muted">已有账号，
+                                        <a href="{% url 'mylib_login' %}"
+                                           title="Sign in"
+                                           class="text-secondary">点此登录</a></span>
+                                </div>
+                            </form>
+                            <!-- End Form -->
+
+                        </div>
+                    </div>
+                </div> <!-- End Row -->
+
+            </div>
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Jquery Core Js -->
+<script src="/static/assets/bundles/libscripts.bundle.js"></script>
+<script>
+    function validate() {
+        let pw1 = document.getElementById("pw1").value;
+        let pw2 = document.getElementById("pw2").value;
+        if (pw1 == pw2) {
+            document.getElementById("submit").disabled = false;
+        } else {
+            document.getElementById("check").innerHTML = "<font color='red'>请检查</font>";
+            document.getElementById("submit").disabled = true;
+        }
+    }
+
+    function testEmail(str) {
+        const re = /^\w+@[0-9a-z]+\.[a-z]+$/;
+        return re.test(str);
+    }
+
+
+
+    function sendcode() {
+        let email = $("#email").val();//获取用户输入邮箱
+        if (email === '' || !testEmail(email)) {//验证邮箱格式
+            alert('邮箱格式有误，请检查');
+            return
+        }
+        //按钮不可再次点击，开始倒计时
+        $.ajax({
+            url: "/mylib/reg",
+            type: "post",
+            data: {
+                type: 'sendMessage',
+                csrfmiddlewaretoken: '{{ csrf_token }}',
+                email: email
+            },
+            dataType: "json",
+            success: function (reg) {
+                // 短信发送失败
+                if (!reg.state) {
+                    showError(reg.errmsg);
+                } else {
+                    console.log(reg.state);
+                    settime();//短信发送成功，倒计时
+                }
+            }
+        });
+        let btn_sendEmail = $("#sendEmail");
+        let countdown = 60;
+
+        function settime() {
+            if (countdown === 0) {
+                btn_sendEmail.attr("disabled", false);
+                btn_sendEmail.val("获取验证码");
+                return false;
+            } else {
+                btn_sendEmail.attr("disabled", true);
+                btn_sendEmail.val("重新发送(" + countdown + ")");
+                countdown--;
+            }
+            setTimeout(function () {
+                settime();
+            }, 1000);
+        }
+
+    }
+
+
+</script>
+</body>
+</html>

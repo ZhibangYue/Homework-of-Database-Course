@@ -1,0 +1,129 @@
+{% extends 'myadmin/base.html' %}
+{% block head %}
+<title>后台商品管理</title>
+<link rel="stylesheet" href="/static/assets/plugin/datatables/responsive.dataTables.min.css">
+<link rel="stylesheet" href="/static/assets/plugin/datatables/dataTables.bootstrap5.min.css">
+<link rel="stylesheet" href="/static/assets/css/my-task.style.min.css">
+<link rel="stylesheet" href="/static/assets/css/css2.css">
+{% endblock %}
+
+{% block con %}
+<!--body-->
+<div class="body d-flex py-lg-3 py-md-2">
+    <div class="container-xxl">
+        <div class="row align-items-center">
+            <div class="border-0 mb-4">
+                <div class="card-header py-3 no-bg bg-transparent d-flex align-items-center px-0 justify-content-between border-bottom flex-wrap">
+                    <h3 class="fw-bold mb-0">商品管理</h3>
+                    <div class="col-auto d-flex w-sm-100">
+
+                        <a href="{% url 'myadmin_merchandise_add' %}" class="btn btn-dark btn-set-task w-sm-100"
+                        ><i class="icofont-plus-circle me-2 fs-6"></i>添加
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Row end  -->
+        <div class="row clearfix g-3">
+            <div class="col-sm-12">
+                <div class="card mb-3">
+                    <div class="card-body">
+                        <table id="myProjectTable" class="table table-hover align-middle mb-0" style="width:100%">
+                            <thead>
+                            <tr role="row">
+                                <th rowspan="1" colspan="1">id</th>
+
+                                <th rowspan="1" colspan="1">名称</th>
+                                <th rowspan="1" colspan="1">价格</th>
+                                <th rowspan="1" colspan="1">作者</th>
+                                <th rowspan="1" colspan="1">类别</th>
+                                <th rowspan="1" colspan="1">出版社</th>
+                                <th rowspan="1" colspan="1">出版时间</th>
+                                <th rowspan="1" colspan="1">操作</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for i in data %}
+                            <tr>
+                                <td>{{ i.id }}</td>
+                                <td>{{ i.name }}</td>
+                                <td>{{ i.price }}</td>
+                                <td>{{ i.author }}</td>
+                                <td>{{ i.type }}</td>
+                                <td>{{ i.publisher }}</td>
+                                <td>{{ i.pub_date }}</td>
+                                <td>
+                                    <div class="btn-group" role="group" aria-label="Basic outlined example">
+                                        <button type="button" class="btn btn-outline-secondary edit_button"
+                                                >
+                                            <i class="icofont-edit text-success"></i>
+                                        </button>
+                                        <button type="button"
+                                                class="btn btn-outline-secondary deleterow"><i
+                                                class="icofont-ui-delete text-danger"></i></button>
+                                    </div>
+                                </td>
+                            </tr>
+
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- Row End -->
+    </div>
+</div>
+
+{% endblock %}
+
+{% block script %}
+<!-- Plugin Js-->
+<script src="/static/assets/bundles/dataTables.bundle.js"></script>
+<script src="/static/assets/bundles/apexcharts.bundle.js"></script>
+<!-- Jquery Page Js -->
+<script src="/static/js/template.js"></script>
+
+
+    <script>
+        // project data table
+        $(document).ready(function () {
+            $('#myProjectTable')
+                .addClass('nowrap')
+                .dataTable({
+                    responsive: true,
+                    columnDefs: [{
+                        targets: [-1, -3],
+                        className: 'dt-body-center'
+                    }]
+                });
+            //隐藏
+
+            $('.deleterow').on('click', function () {
+                let $del = $(this);
+                let id = $del.parents('tr').find('td:first').text();
+                $.get("{% url 'myadmin_merchandise_delete' %}", {"id": id}, function (data) {
+                    if (data["code"] == 20000) {
+                        alert("删除成功");
+                        let tablename = $del.closest('table').DataTable();
+                        tablename
+                            .row($(this)
+                                .parents('tr'))
+                            .remove()
+                            .draw();
+                    }
+                }, "json")
+
+            });
+        });
+        $('.edit_button').on('click',
+            function () {
+                let $del = $(this);
+                let id = $del.parents('tr').find('td:first').text();
+                location.href = "{% url 'myadmin_merchandise_edit' %}?id="+id
+            });
+
+    </script>
+{% endblock %}
